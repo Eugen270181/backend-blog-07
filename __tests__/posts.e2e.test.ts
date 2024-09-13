@@ -1,6 +1,6 @@
 import {req} from './helpers/test-helpers'
 import {dbMongo, setDB} from '../src/db/dbMemory'
-import {SETTINGS} from '../src/settings'
+import {appConfig} from '../src/common/settings/config'
 import {codedAuth, createString, dataset1, dataset2} from './helpers/datasets'
 
 import {CreatePostInputModel} from "../src/features/posts/types/input/create-post-input.type";
@@ -20,7 +20,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.POSTS)
+            .post(appConfig.PATH.POSTS)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(newPost) // отправка данных
             .expect(201)
@@ -46,7 +46,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.POSTS)
+            .post(appConfig.PATH.POSTS)
             .send(newPost) // отправка данных
             .expect(401)
 
@@ -64,7 +64,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.POSTS)
+            .post(appConfig.PATH.POSTS)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(newPost) // отправка данных
             .expect(400)
@@ -83,7 +83,7 @@ describe('/posts', () => {
         setDB() // очистка базы данных если нужно
 
         const res = await req
-            .get(SETTINGS.PATH.POSTS)
+            .get(appConfig.PATH.POSTS)
             .expect(200) // проверяем наличие эндпоинта
 
         // console.log(res.body) // можно посмотреть ответ эндпоинта
@@ -94,7 +94,7 @@ describe('/posts', () => {
         setDB(dataset2) // заполнение базы данных начальными данными если нужно
 
         const res = await req
-            .get(SETTINGS.PATH.POSTS)
+            .get(appConfig.PATH.POSTS)
             .expect(200)
 
         // console.log(res.body)
@@ -106,7 +106,7 @@ describe('/posts', () => {
         setDB(dataset1)
 
         const res = await req
-            .get(SETTINGS.PATH.POSTS + '/1')
+            .get(appConfig.PATH.POSTS + '/1')
             .expect(404) // проверка на ошибку
 
         // console.log(res.body)
@@ -115,7 +115,7 @@ describe('/posts', () => {
         setDB(dataset2)
 
         const res = await req
-            .get(SETTINGS.PATH.POSTS + '/' + dataset2.posts[0].id)
+            .get(appConfig.PATH.POSTS + '/' + dataset2.posts[0].id)
             .expect(200) // проверка на ошибку
 
         // console.log(res.body)
@@ -126,7 +126,7 @@ describe('/posts', () => {
         setDB(dataset2)
 
         const res = await req
-            .delete(SETTINGS.PATH.POSTS + '/' + dataset2.posts[0].id)
+            .delete(appConfig.PATH.POSTS + '/' + dataset2.posts[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .expect(204) // проверка на ошибку
 
@@ -138,7 +138,7 @@ describe('/posts', () => {
         setDB()
 
         const res = await req
-            .delete(SETTINGS.PATH.POSTS + '/1')
+            .delete(appConfig.PATH.POSTS + '/1')
             .set({'Authorization': 'Basic ' + codedAuth})
             .expect(404) // проверка на ошибку
 
@@ -148,7 +148,7 @@ describe('/posts', () => {
         setDB()
 
         const res = await req
-            .delete(SETTINGS.PATH.POSTS + '/1')
+            .delete(appConfig.PATH.POSTS + '/1')
             .set({'Authorization': 'Basic' + codedAuth}) // no ' '
             .expect(401) // проверка на ошибку
 
@@ -164,7 +164,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.POSTS + '/' + dataset2.posts[0].id)
+            .put(appConfig.PATH.POSTS + '/' + dataset2.posts[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(post)
             .expect(204) // проверка на ошибку
@@ -183,7 +183,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.POSTS + '/1')
+            .put(appConfig.PATH.POSTS + '/1')
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(post)
             .expect(404) // проверка на ошибку
@@ -200,7 +200,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.POSTS + '/' + dataset2.posts[0].id)
+            .put(appConfig.PATH.POSTS + '/' + dataset2.posts[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(post)
             .expect(400) // проверка на ошибку
@@ -224,7 +224,7 @@ describe('/posts', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.POSTS + '/' + dataset2.posts[0].id)
+            .put(appConfig.PATH.POSTS + '/' + dataset2.posts[0].id)
             .set({'Authorization': 'Basic ' + codedAuth + 'error'})
             .send(post)
             .expect(401) // проверка на ошибку

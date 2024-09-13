@@ -2,11 +2,11 @@
 //import {BlogDbModel} from '../../src/common/types/db/blog-db.model'
 //import {PostDbModel} from '../../src/common/types/db/post-db.model'
 import {fromUTF8ToBase64} from '../../src/common/middleware/admin-middleware'
-import {SETTINGS} from '../../src/settings'
+import {appConfig} from '../../src/common/settings/config'
 
 // готовые данные для переиспользования в тестах
 
-export const codedAuth = fromUTF8ToBase64(SETTINGS.ADMIN)
+export const codedAuth = fromUTF8ToBase64(appConfig.ADMIN)
 
 export const createString = (length: number) => {
     let s = ''

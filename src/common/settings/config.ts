@@ -1,16 +1,16 @@
 import {config} from 'dotenv'
-
-config()
-
+config() // добавление переменных из файла .env в process.env
 export const appConfig = {
-
-    PORT: process.env.PORT,
-    MONGO_URL: process.env.MONGO_URL as string,
-    DB_NAME: process.env.DB_NAME as string,
-    AC_SECRET: process.env.AC_SECRET as string,
-    AC_TIME: process.env.AC_TIME as string,
-    RT_SECRET: process.env.RT_SECRET,
-    DB_TYPE: process.env.DB_TYPE,
-    EMAIL: process.env.EMAIL as string,
-    EMAIL_PASS: process.env.EMAIL_PASS as string,
+    // все хардкодные значения должны быть здесь, для удобства их изменения
+    PORT: process.env.PORT || 3003,
+    ADMIN: process.env.ADMIN || 'admin:qwerty',
+    MONGO_URL:process.env.MONGO_URL || 'mongodb+srv://admin:admin@blogerplatform.vkvms.mongodb.net/BlogsPosts?retryWrites=true&w=majority&appName=BlogerPlatform',
+    DB_NAME:process.env.DB_NAME || 'BlogsPosts',
+    SECRET_KEY:'QWED453DFG',
+    BLOG_COLLECTION_NAME:process.env.BLOG_COLLECTION_NAME || 'Blogs',
+    POST_COLLECTION_NAME:process.env.POST_COLLECTION_NAME || 'Posts',
+    USER_COLLECTION_NAME:process.env.USERS_COLLECTION_NAME || 'Users',
+    COMMENT_COLLECTION_NAME:process.env.COMMENT_COLLECTION_NAME || 'Comments'
 }
+//console.log(process.env.MONGO_URL)
+// console.log(process.env.ADMIN)

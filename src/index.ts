@@ -1,10 +1,10 @@
 import {app} from './app'
 import {connectToDB} from "./common/module/db/dbMongo";
-import {SETTINGS} from './settings'
+import {appConfig} from './common/settings/config'
 const startApp = async()=>{
     await connectToDB()
-    app.listen(SETTINGS.PORT, ()=>{
-        console.log(`starting on port:${SETTINGS.PORT}`)
+    app.listen(appConfig.PORT, ()=>{
+        console.log(`starting on port:${appConfig.PORT}`)
     })
 }
 

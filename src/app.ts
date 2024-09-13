@@ -1,6 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import {SETTINGS} from './settings'
 import {authRouter} from './features/auth'
 import {usersRouter} from './features/users'
 import {blogsRouter} from './features/blogs'

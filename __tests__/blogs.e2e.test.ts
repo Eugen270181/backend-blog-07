@@ -1,6 +1,6 @@
 import {req} from './helpers/test-helpers'
 import {dbMongo, setDB} from '../src/db/dbMemory'
-import {SETTINGS} from '../src/settings'
+import {appConfig} from '../src/common/settings/config'
 import {codedAuth, createString, dataset1} from './helpers/datasets'
 import {CreateBlogInputModel} from "../src/features/blogs/types/input/create-blog-input.type";
 
@@ -18,7 +18,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.BLOGS)
+            .post(appConfig.PATH.BLOGS)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(newBlog) // отправка данных
             .expect(201)
@@ -41,7 +41,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.BLOGS)
+            .post(appConfig.PATH.BLOGS)
             .send(newBlog) // отправка данных
             .expect(401)
 
@@ -58,7 +58,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .post(SETTINGS.PATH.BLOGS)
+            .post(appConfig.PATH.BLOGS)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(newBlog) // отправка данных
             .expect(400)
@@ -76,7 +76,7 @@ describe('/blogs', () => {
         setDB() // очистка базы данных если нужно
 
         const res = await req
-            .get(SETTINGS.PATH.BLOGS)
+            .get(appConfig.PATH.BLOGS)
             .expect(200) // проверяем наличие эндпоинта
 
         // console.log(res.body) // можно посмотреть ответ эндпоинта
@@ -87,7 +87,7 @@ describe('/blogs', () => {
         setDB(dataset1) // заполнение базы данных начальными данными если нужно
 
         const res = await req
-            .get(SETTINGS.PATH.BLOGS)
+            .get(appConfig.PATH.BLOGS)
             .expect(200)
 
         // console.log(res.body)
@@ -99,7 +99,7 @@ describe('/blogs', () => {
         setDB(dataset1)
 
         const res = await req
-            .get(SETTINGS.PATH.BLOGS + '/1')
+            .get(appConfig.PATH.BLOGS + '/1')
             .expect(404) // проверка на ошибку
 
         // console.log(res.body)
@@ -108,7 +108,7 @@ describe('/blogs', () => {
         setDB(dataset1)
 
         const res = await req
-            .get(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id)
+            .get(appConfig.PATH.BLOGS + '/' + dataset1.blogs[0].id)
             .expect(200) // проверка на ошибку
 
         // console.log(res.body)
@@ -119,7 +119,7 @@ describe('/blogs', () => {
         setDB(dataset1)
 
         const res = await req
-            .delete(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id)
+            .delete(appConfig.PATH.BLOGS + '/' + dataset1.blogs[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .expect(204) // проверка на ошибку
 
@@ -131,7 +131,7 @@ describe('/blogs', () => {
         setDB()
 
         const res = await req
-            .delete(SETTINGS.PATH.BLOGS + '/1')
+            .delete(appConfig.PATH.BLOGS + '/1')
             .set({'Authorization': 'Basic ' + codedAuth})
             .expect(404) // проверка на ошибку
 
@@ -141,7 +141,7 @@ describe('/blogs', () => {
         setDB()
 
         const res = await req
-            .delete(SETTINGS.PATH.BLOGS + '/1')
+            .delete(appConfig.PATH.BLOGS + '/1')
             .set({'Authorization': 'Basic' + codedAuth}) // no ' '
             .expect(401) // проверка на ошибку
 
@@ -156,7 +156,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id)
+            .put(appConfig.PATH.BLOGS + '/' + dataset1.blogs[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(blog)
             .expect(204) // проверка на ошибку
@@ -174,7 +174,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.BLOGS + '/1')
+            .put(appConfig.PATH.BLOGS + '/1')
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(blog)
             .expect(404) // проверка на ошибку
@@ -190,7 +190,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id)
+            .put(appConfig.PATH.BLOGS + '/' + dataset1.blogs[0].id)
             .set({'Authorization': 'Basic ' + codedAuth})
             .send(blog)
             .expect(400) // проверка на ошибку
@@ -212,7 +212,7 @@ describe('/blogs', () => {
         }
 
         const res = await req
-            .put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id)
+            .put(appConfig.PATH.BLOGS + '/' + dataset1.blogs[0].id)
             .set({'Authorization': 'Basic ' + codedAuth + 'error'})
             .send(blog)
             .expect(401) // проверка на ошибку

@@ -1,5 +1,5 @@
 import {Response, Request, NextFunction} from 'express'
-import {SETTINGS} from '../../settings'
+import {appConfig} from '../settings/config'
 
 export const fromBase64ToUTF8 = (code: string) => {
     const buff = Buffer.from(code, 'base64')
@@ -22,7 +22,7 @@ export const adminMiddleware = (req: Request, res: Response, next: NextFunction)
         return
     }
     // const decodedAuth = fromBase64ToUTF8(auth.slice(6))
-    const codedAuth = fromUTF8ToBase64(SETTINGS.ADMIN)
+    const codedAuth = fromUTF8ToBase64(appConfig.ADMIN)
     // if (decodedAuth !== SETTINGS.ADMIN) {
     if (auth.slice(6) !== codedAuth) {
         res.status(401).json({})
