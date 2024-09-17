@@ -1,8 +1,8 @@
 import {Request, Response} from 'express'
 import {commentsQueryRepository} from "../../comments/repositories/commentsQueryRepository";
 import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
-import {validQueryType} from "../../../common/types/valid-query-type";
-import {anyQueryType} from "../../../common/types/any-query-type";
+import {validQueryType} from "../../../common/types/validQuery.type";
+import {anyQueryType} from "../../../common/types/anyQuery.type";
 import {pagCommentOutputModel} from "../../comments/types/output/pag-comment-output.type";
 import {postsRepository} from "../repository/postsRepository";
 

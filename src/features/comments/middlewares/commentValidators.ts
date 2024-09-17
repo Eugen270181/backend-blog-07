@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 
 
 //content: string //min 20 max 300
@@ -11,5 +11,5 @@ export const contentValidator = body('content').isString().withMessage('Login mu
 export const commentValidators = [
     contentValidator,
 
-    inputCheckErrorsMiddleware
+    inputValidationMiddleware
 ]

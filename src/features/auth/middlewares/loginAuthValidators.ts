@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 
 export const loginOrEmailValidator = body('loginOrEmail').isString().withMessage('not string')
 export const passwordValidator = body('password').isString().withMessage('not string')
@@ -8,5 +8,5 @@ export const loginAuthValidators = [
     loginOrEmailValidator,
     passwordValidator,
 
-    inputCheckErrorsMiddleware,
+    inputValidationMiddleware,
 ]

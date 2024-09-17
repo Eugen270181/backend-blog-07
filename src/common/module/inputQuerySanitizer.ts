@@ -1,5 +1,5 @@
-import {anyQueryType} from "../types/any-query-type";
-import {validQueryType} from "../types/valid-query-type";
+import {anyQueryType} from "../types/anyQuery.type";
+import {validQueryType} from "../types/validQuery.type";
 
 export const inputQuerySanitizer = (query:anyQueryType):validQueryType =>{
     return {

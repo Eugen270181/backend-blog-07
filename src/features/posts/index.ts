@@ -5,9 +5,9 @@ import {findPostController} from './controllers/findPostController'
 import {delPostController} from './controllers/delPostController'
 import {putPostController} from './controllers/putPostController'
 import {postValidators} from './middlewares/postValidators'
-import {adminMiddleware} from '../../common/middleware/admin-middleware'
+import {adminMiddleware} from '../../common/middleware/adminMiddleware'
 import {findPostCommentsController} from "./controllers/findPostCommentsController";
-import {authMiddleware} from "../../common/middleware/auth-middleware";
+import {authMiddleware} from "../../common/middleware/authMiddleware";
 import {commentValidators} from "../comments/middlewares/commentValidators";
 import {createPostCommentController} from "./controllers/createPostCommentController";
 

@@ -5,7 +5,7 @@ import {findBlogController} from './controllers/findBlogController'
 import {delBlogController} from './controllers/delBlogController'
 import {putBlogController} from './controllers/putBlogController'
 import {blogValidators} from './middlewares/blogValidators'
-import {adminMiddleware} from '../../common/middleware/admin-middleware'
+import {adminMiddleware} from '../../common/middleware/adminMiddleware'
 import {findBlogPostsController} from "./controllers/findBlogPostsController";
 import {createBlogPostController} from "./controllers/createBlogPostController";
 import {blogPostValidators} from "../posts/middlewares/postValidators";

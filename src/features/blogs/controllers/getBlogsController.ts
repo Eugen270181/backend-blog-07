@@ -2,8 +2,8 @@ import {Request, Response} from 'express'
 import {blogsQueryRepository} from "../repositories/blogsQueryRepository";
 import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
 import {pagBlogOutputModel} from "../types/output/pag-blog-output.type";
-import {validQueryType} from "../../../common/types/valid-query-type";
-import {anyQueryType} from "../../../common/types/any-query-type";
+import {validQueryType} from "../../../common/types/validQuery.type";
+import {anyQueryType} from "../../../common/types/anyQuery.type";
 
 export const getBlogsController = async (req:Request, res:Response<pagBlogOutputModel>) => {
     const sanitizedQuery:validQueryType = inputQuerySanitizer(req.query as anyQueryType)

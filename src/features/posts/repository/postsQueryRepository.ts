@@ -1,16 +1,16 @@
-import {postCollection} from "../../../common/module/db/dbMongo"
+import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
 import {PostOutputModel} from "../types/output/post-output.type";
 import {PostDbModel} from "../../../common/types/db/post-db.model";
-import {validQueryType} from "../../../common/types/valid-query-type";
+import {validQueryType} from "../../../common/types/validQuery.type";
 import {pagPostOutputModel} from "../types/output/pag-post-output.type";
 
-
+const postsCollection = db.getCollections().postsCollection;
 export const postsQueryRepository = {
     async findPostById(id: string) {
         const isIdValid = ObjectId.isValid(id)
         if (!isIdValid) return null
-        return postCollection.findOne({ _id: new ObjectId(id) })
+        return postsCollection.findOne({ _id: new ObjectId(id) })
     },
     async findPostAndMap(id: string) {
         const post = await this.findPostById(id)
@@ -23,13 +23,13 @@ export const postsQueryRepository = {
         }
         //const search = query.searchNameTerm ? {title:{$regex:query.searchNameTerm,$options:'i'}}:{}
         try {
-            const posts = await postCollection
+            const posts = await postsCollection
                 .find(filter)
                 .sort(query.sortBy,query.sortDirection)
                 .skip((query.pageNumber-1)*query.pageSize)
                 .limit(query.pageSize)
                 .toArray()
-            const totalCount = await postCollection.countDocuments(filter)
+            const totalCount = await postsCollection.countDocuments(filter)
             return {
                 pagesCount: Math.ceil(totalCount/query.pageSize),
                 page: query.pageNumber,

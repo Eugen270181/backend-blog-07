@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import {userValidators} from "./middlewares/userValidators";
-import {adminMiddleware} from "../../common/middleware/admin-middleware";
+import {adminMiddleware} from "../../common/middleware/adminMiddleware";
 import {getUsersController} from "./controllers/getUsersController";
 import {createUserController} from "./controllers/createUserController";
 import {delUserController} from "./controllers/delUserController";

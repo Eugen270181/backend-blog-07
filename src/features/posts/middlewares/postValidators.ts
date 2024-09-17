@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 import {blogsRepository} from '../../blogs/repositories/blogsRepository'
 import {WithId} from "mongodb";
 import {BlogDbModel} from "../../../common/types/db/blog-db.model";
@@ -24,7 +24,7 @@ export const postValidators = [
     contentValidator,
     blogIdValidator,
 
-    inputCheckErrorsMiddleware,
+    inputValidationMiddleware,
 ]
 
 export const blogPostValidators = [
@@ -32,5 +32,5 @@ export const blogPostValidators = [
     shortDescriptionValidator,
     contentValidator,
 
-    inputCheckErrorsMiddleware,
+    inputValidationMiddleware,
 ]

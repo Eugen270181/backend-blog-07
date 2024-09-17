@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 
 
 // name: string // max 15
@@ -20,5 +20,5 @@ export const blogValidators = [
     descriptionValidator,
     websiteUrlValidator,
 
-    inputCheckErrorsMiddleware,
+    inputValidationMiddleware,
 ]

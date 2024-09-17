@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {inputCheckErrorsMiddleware} from '../../../common/middleware/inputCheckErrorsMiddleware'
+import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 
 
 //login: string //min 3 max 10 pattern ^[a-zA-Z0-9_-]*$
@@ -20,5 +20,5 @@ export const userValidators = [
     passwordValidator,
     emailValidator,
 
-    inputCheckErrorsMiddleware,
+    inputValidationMiddleware,
 ]

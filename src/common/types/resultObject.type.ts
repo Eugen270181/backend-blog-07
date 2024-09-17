@@ -1,4 +1,4 @@
-import {StatusCode} from "./enum/result-StatusCode-type";
+import {StatusCode} from "./enum/resultStatusCode.type";
 
 export type ResultObject<T> = {
     data?:T,

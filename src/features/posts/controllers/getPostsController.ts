@@ -1,8 +1,8 @@
 import {Request, Response} from 'express'
 import {postsQueryRepository} from "../repository/postsQueryRepository";
-import {validQueryType} from "../../../common/types/valid-query-type";
+import {validQueryType} from "../../../common/types/validQuery.type";
 import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
-import {anyQueryType} from "../../../common/types/any-query-type";
+import {anyQueryType} from "../../../common/types/anyQuery.type";
 import {pagPostOutputModel} from "../types/output/pag-post-output.type";
 
 export const getPostsController = async (req: Request, res: Response<pagPostOutputModel>) => {

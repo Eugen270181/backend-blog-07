@@ -3,7 +3,7 @@ import {commentValidators} from "./middlewares/commentValidators";
 
 import {delCommentController} from "./controllers/delCommentController";
 import {updateCommentController} from "./controllers/updateCommentController";
-import {authMiddleware} from "../../common/middleware/auth-middleware";
+import {authMiddleware} from "../../common/middleware/authMiddleware";
 import {findCommentController} from "./controllers/findCommentController";
 
 

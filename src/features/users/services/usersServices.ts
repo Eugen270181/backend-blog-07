@@ -3,7 +3,7 @@ import {ObjectId} from "bson";
 import {CreateUserInputModel} from "../types/input/create-user-input.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
 import {hashServices} from "../../../common/adapters/hashServices";
-import {ResultObject} from "../../../common/types/result-object-type";
+import {ResultObject} from "../../../common/types/resultObject.type";
 
 
 export const usersServices = {
@@ -16,7 +16,7 @@ export const usersServices = {
 
         const newUser: UserDbModel = {
             ...{login, email},
-            passHash: await hashServices.getHash(password),
+            passwordHash: await hashServices.getHash(password),
             createdAt: new Date().toISOString()
         }
         const newUserId = await usersRepository.createUser(newUser)

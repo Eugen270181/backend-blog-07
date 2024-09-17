@@ -3,7 +3,7 @@ import {usersServices} from "../services/usersServices";
 import {usersQueryRepository} from "../repositories/usersQueryRepository";
 import {CreateUserInputModel} from "../types/input/create-user-input.type";
 import {UserOutputModel} from "../types/output/user-output.type";
-import {OutputErrorsType} from "../../../common/types/output-errors-type";
+import {OutputErrorsType} from "../../../common/types/outputErrors.type";
 
 
 export const createUserController = async (req: Request<any, any, CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {

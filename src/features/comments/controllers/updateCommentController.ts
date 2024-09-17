@@ -1,9 +1,9 @@
 import {Request, Response} from 'express'
 import {commentsServices} from "../services/commentsServices";
-import {OutputErrorsType} from "../../../common/types/output-errors-type";
+import {OutputErrorsType} from "../../../common/types/outputErrors.type";
 import {CreateCommentInputModel} from "../types/input/create-comment-input.model";
 import {CommentOutputModel} from "../types/output/comment-output.type";
-import {StatusCode} from "../../../common/types/enum/result-StatusCode-type";
+import {StatusCode} from "../../../common/types/enum/resultStatusCode.type";
 
 
 export const updateCommentController = async (req: Request<any, any, CreateCommentInputModel>, res: Response<CommentOutputModel|OutputErrorsType>) => {
