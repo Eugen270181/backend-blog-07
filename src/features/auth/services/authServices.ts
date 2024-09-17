@@ -8,7 +8,7 @@ export const authServices = {
         const user=await usersRepository.getUserByCredentials(loginOrEmail)
         if (!user) return {statusCode:0}
 
-        const checkPas = await hashServices.checkHash(password, user.passHash)
+        const checkPas = await hashServices.checkHash(password, user.passwordHash)
 
         if (!checkPas) return {data:user._id.toString(),statusCode:0}
         return {data:user._id.toString(),statusCode:1}

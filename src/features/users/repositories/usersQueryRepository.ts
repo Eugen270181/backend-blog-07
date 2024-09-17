@@ -1,4 +1,4 @@
-import {userCollection} from "../../../common/module/db/dbMongo"
+import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
 import {validQueryType} from "../../../common/types/valid-query-type";
 import {pagUserOutputModel} from "../types/output/pag-user-output.type";
@@ -6,12 +6,12 @@ import {UserOutputModel} from "../types/output/user-output.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
 import {MeOutputModel} from "../../auth/types/output/me-output.model";
 
-
+const usersCollection = db.getCollections().usersCollection;
 export const usersQueryRepository = {
     async getUserById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
-        return userCollection.findOne({ _id: new ObjectId(id) });
+        return usersCollection.findOne({ _id: new ObjectId(id) });
     },
     async getMapUser(id: string) {
         const user = await this.getUserById(id)
@@ -27,13 +27,13 @@ export const usersQueryRepository = {
         const searchEmail = query.searchEmailTerm ? {email:{$regex:query.searchEmailTerm,$options:'i'}}:{}
         const search = {$or:[searchLogin,searchEmail]}
         try {
-            const users = await userCollection
+            const users = await usersCollection
                 .find(search)
                 .sort(query.sortBy,query.sortDirection)
                 .skip((query.pageNumber-1)*query.pageSize)
                 .limit(query.pageSize)
                 .toArray()
-            const totalCount = await userCollection.countDocuments(search)
+            const totalCount = await usersCollection.countDocuments(search)
             return {
                 pagesCount: Math.ceil(totalCount/query.pageSize),
                 page: query.pageNumber,
@@ -49,7 +49,7 @@ export const usersQueryRepository = {
 
     },
     mapUser(user:WithId<UserDbModel>):UserOutputModel{
-        const { _id, passHash,...userForOutPut} = user;//деструктуризация
+        const { _id, passwordHash,...userForOutPut} = user;//деструктуризация
         return {id:user._id.toString(),...userForOutPut}
     },
     mapMe(user:WithId<UserDbModel>):MeOutputModel{

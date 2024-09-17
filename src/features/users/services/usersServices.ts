@@ -16,7 +16,7 @@ export const usersServices = {
 
         const newUser: UserDbModel = {
             ...{login, email},
-            passHash: await hashServices.getHash(password),
+            passwordHash: await hashServices.getHash(password),
             createdAt: new Date().toISOString()
         }
         const newUserId = await usersRepository.createUser(newUser)
