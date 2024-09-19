@@ -1,11 +1,11 @@
 import express from 'express'
 import cors from 'cors'
-import {authRouter} from './features/auth'
-import {usersRouter} from './features/users'
-import {blogsRouter} from './features/blogs'
-import {testingRouter} from './features/testing'
-import {postsRouter} from './features/posts'
-import {commentsRouter} from "./features/comments";
+import {authRouter} from './features/auth/auth.router'
+import {usersRouter} from './features/users/users.router'
+import {blogsRouter} from './features/blogs/blogs.router'
+import {testingRouter} from './features/testing/testing.router'
+import {postsRouter} from './features/posts/posts.router'
+import {commentsRouter} from "./features/comments/comments.router";
 import {routersPaths} from "./common/settings/paths";
 
 

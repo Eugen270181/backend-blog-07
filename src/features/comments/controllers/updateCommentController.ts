@@ -3,7 +3,7 @@ import {commentsServices} from "../services/commentsServices";
 import {OutputErrorsType} from "../../../common/types/outputErrors.type";
 import {CreateCommentInputModel} from "../types/input/create-comment-input.model";
 import {CommentOutputModel} from "../types/output/comment-output.type";
-import {StatusCode} from "../../../common/types/enum/resultStatusCode.type";
+import {StatusCode} from "../../../common/types/enum/result-StatusCode-type";
 
 
 export const updateCommentController = async (req: Request<any, any, CreateCommentInputModel>, res: Response<CommentOutputModel|OutputErrorsType>) => {

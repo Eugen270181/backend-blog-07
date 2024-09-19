@@ -3,7 +3,7 @@ import {db} from "../../../common/module/db/db"
 import {ObjectId} from "mongodb"
 import {UpdatePostInputModel} from "../types/input/update-post-input.type";
 
-const postsCollection = db.getCollections().postsCollection;
+const postsCollection = db?.getCollections().postsCollection;
 export const postsRepository = {
     async createPost(post: PostDbModel) {
         const result = await postsCollection.insertOne(post)

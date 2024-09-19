@@ -5,9 +5,10 @@ import {validQueryType} from "../../../common/types/validQuery.type";
 import {pagBlogOutputModel} from "../types/output/pag-blog-output.type";
 import {db} from "../../../common/module/db/db";
 
-const blogsCollection = db.getCollections().blogsCollection;
+const blogsCollection = db?.getCollections().blogsCollection;
 
 export const blogsQueryRepository = {
+
     async findBlogById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null

@@ -5,7 +5,7 @@ import {PostDbModel} from "../../../common/types/db/post-db.model";
 import {validQueryType} from "../../../common/types/validQuery.type";
 import {pagPostOutputModel} from "../types/output/pag-post-output.type";
 
-const postsCollection = db.getCollections().postsCollection;
+const postsCollection = db?.getCollections().postsCollection;
 export const postsQueryRepository = {
     async findPostById(id: string) {
         const isIdValid = ObjectId.isValid(id)

@@ -4,6 +4,8 @@ import {UserDbModel} from "../../../common/types/db/user-db.model";
 
 const usersCollection = db.getCollections().usersCollection;
 export const usersRepository = {
+
+
     async createUser(user: UserDbModel):Promise<string> {
         const result = await usersCollection.insertOne(user)
         return result.insertedId.toString() // return _id -objectId

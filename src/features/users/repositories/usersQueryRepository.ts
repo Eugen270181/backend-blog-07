@@ -6,7 +6,7 @@ import {UserOutputModel} from "../types/output/user-output.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
 import {MeOutputModel} from "../../auth/types/output/me-output.model";
 
-const usersCollection = db.getCollections().usersCollection;
+const usersCollection = db?.getCollections().usersCollection;
 export const usersQueryRepository = {
     async getUserById(id: string) {
         const isIdValid = ObjectId.isValid(id);

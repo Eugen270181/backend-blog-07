@@ -4,7 +4,7 @@ import {CreateCommentInputModel} from "../types/input/create-comment-input.model
 import {CommentDbModel} from "../../../common/types/db/comment-db.model";
 import {UpdateCommentInputModel} from "../types/input/update-comment-input.model";
 import {usersRepository} from "../../users/repositories/usersRepository";
-import {StatusCode} from "../../../common/types/enum/resultStatusCode.type";
+import {StatusCode} from "../../../common/types/enum/result-StatusCode-type";
 
 
 //TODO:update delete with diff statuscode

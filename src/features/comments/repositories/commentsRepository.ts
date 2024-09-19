@@ -3,7 +3,7 @@ import {ObjectId,WithId} from "mongodb"
 import {CommentDbModel} from "../../../common/types/db/comment-db.model";
 import {UpdateCommentInputModel} from "../types/input/update-comment-input.model";
 
-const commentsCollection = db.getCollections().commentsCollection;
+const commentsCollection = db?.getCollections().commentsCollection;
 export const commentsRepository = {
     async createComment(comment:CommentDbModel):Promise<string> {
         const result = await commentsCollection.insertOne(comment)

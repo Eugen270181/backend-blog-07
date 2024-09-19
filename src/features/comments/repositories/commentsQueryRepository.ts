@@ -5,7 +5,7 @@ import {CommentOutputModel} from "../types/output/comment-output.type";
 import {CommentDbModel} from "../../../common/types/db/comment-db.model";
 import {pagCommentOutputModel} from "../types/output/pag-comment-output.type";
 
-const commentsCollection = db.getCollections().commentsCollection;
+const commentsCollection = db?.getCollections().commentsCollection;
 export const commentsQueryRepository = {
     async findCommentById(id: string) {
         const isIdValid = ObjectId.isValid(id);

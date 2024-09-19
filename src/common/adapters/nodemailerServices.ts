@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-import {appConfig} from "../config/config";
+import { appConfig } from "../settings/config";
+
 
 export const nodemailerServices = {
 

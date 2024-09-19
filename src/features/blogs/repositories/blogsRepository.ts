@@ -3,7 +3,7 @@ import {db} from "../../../common/module/db/db"
 import {ObjectId} from "mongodb"
 import {UpdateBlogInputModel} from "../types/input/update-blog-input.type";
 
-const blogsCollection = db.getCollections().blogsCollection;
+const blogsCollection = db?.getCollections().blogsCollection;
 export const blogsRepository = {
     async createBlog(blog: BlogDbModel):Promise<string> {
         const result = await blogsCollection.insertOne(blog)
