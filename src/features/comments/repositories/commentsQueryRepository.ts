@@ -5,12 +5,11 @@ import {CommentOutputModel} from "../types/output/comment-output.type";
 import {CommentDbModel} from "../../../common/types/db/comment-db.model";
 import {pagCommentOutputModel} from "../types/output/pag-comment-output.type";
 
-const commentsCollection = db?.getCollections().commentsCollection;
 export const commentsQueryRepository = {
     async findCommentById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
-        return commentsCollection.findOne({ _id: new ObjectId(id) });
+        return db.getCollections().commentsCollection.findOne({ _id: new ObjectId(id) });
     },
     async findCommentAndMap(id: string) {
         const comment = await this.findCommentById(id)
@@ -19,13 +18,13 @@ export const commentsQueryRepository = {
     async getCommentsAndMap(query:validQueryType,postId?:string):Promise<pagCommentOutputModel> {
         const search = postId?{postId:postId}:{}
         try {
-            const comments = await commentsCollection
+            const comments = await db.getCollections().commentsCollection
                 .find(search)
                 .sort(query.sortBy,query.sortDirection)
                 .skip((query.pageNumber-1)*query.pageSize)
                 .limit(query.pageSize)
                 .toArray()
-            const totalCount = await commentsCollection.countDocuments(search)
+            const totalCount = await db.getCollections().commentsCollection.countDocuments(search)
             return {
                 pagesCount: Math.ceil(totalCount/query.pageSize),
                 page: query.pageNumber,

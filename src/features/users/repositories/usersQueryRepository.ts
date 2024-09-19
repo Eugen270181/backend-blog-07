@@ -6,12 +6,11 @@ import {UserOutputModel} from "../types/output/user-output.type";
 import {UserDbModel} from "../../../common/types/db/user-db.model";
 import {MeOutputModel} from "../../auth/types/output/me-output.model";
 
-const usersCollection = db?.getCollections().usersCollection;
 export const usersQueryRepository = {
     async getUserById(id: string) {
         const isIdValid = ObjectId.isValid(id);
         if (!isIdValid) return null
-        return usersCollection.findOne({ _id: new ObjectId(id) });
+        return db.getCollections().usersCollection.findOne({ _id: new ObjectId(id) });
     },
     async getMapUser(id: string) {
         const user = await this.getUserById(id)
@@ -27,13 +26,13 @@ export const usersQueryRepository = {
         const searchEmail = query.searchEmailTerm ? {email:{$regex:query.searchEmailTerm,$options:'i'}}:{}
         const search = {$or:[searchLogin,searchEmail]}
         try {
-            const users = await usersCollection
+            const users = await db.getCollections().usersCollection
                 .find(search)
                 .sort(query.sortBy,query.sortDirection)
                 .skip((query.pageNumber-1)*query.pageSize)
                 .limit(query.pageSize)
                 .toArray()
-            const totalCount = await usersCollection.countDocuments(search)
+            const totalCount = await db.getCollections().usersCollection.countDocuments(search)
             return {
                 pagesCount: Math.ceil(totalCount/query.pageSize),
                 page: query.pageNumber,
