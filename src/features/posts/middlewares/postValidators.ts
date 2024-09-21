@@ -2,7 +2,7 @@ import {body} from 'express-validator'
 import {inputValidationMiddleware} from '../../../common/middleware/inputValidationMiddleware'
 import {blogsRepository} from '../../blogs/repositories/blogsRepository'
 import {WithId} from "mongodb";
-import {BlogDbModel} from "../../../common/types/db/blog-db.model";
+import {BlogDbModel} from "../../../common/types/db/blogDb.model";
 
 export const titleValidator = body('title').isString().withMessage('not string')
     .trim().isLength({min: 1, max: 30}).withMessage('more then 30 or 0')

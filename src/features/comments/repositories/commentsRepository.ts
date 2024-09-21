@@ -1,6 +1,6 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId,WithId} from "mongodb"
-import {CommentDbModel} from "../../../common/types/db/comment-db.model";
+import {CommentDbModel} from "../../../common/types/db/commentDb.model";
 import {UpdateCommentInputModel} from "../types/input/update-comment-input.model";
 
 export const commentsRepository = {

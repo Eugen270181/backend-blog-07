@@ -2,7 +2,7 @@ import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
 import {validQueryType} from "../../../common/types/validQuery.type";
 import {CommentOutputModel} from "../types/output/comment-output.type";
-import {CommentDbModel} from "../../../common/types/db/comment-db.model";
+import {CommentDbModel} from "../../../common/types/db/commentDb.model";
 import {pagCommentOutputModel} from "../types/output/pag-comment-output.type";
 
 export const commentsQueryRepository = {

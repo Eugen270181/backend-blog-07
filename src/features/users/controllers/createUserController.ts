@@ -8,7 +8,7 @@ import {OutputErrorsType} from "../../../common/types/outputErrors.type";
 
 export const createUserController = async (req: Request<any, any, CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {
     const newUserResult = await usersServices.createUser(req.body)
-    if (!newUserResult.statusCode) {
+    if (!newUserResult.status) {
         res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:newUserResult.data!} ] })
         return
     }

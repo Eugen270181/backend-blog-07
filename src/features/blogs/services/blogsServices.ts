@@ -1,7 +1,7 @@
 import {blogsRepository} from "../repositories/blogsRepository";
 import {CreateBlogInputModel} from "../types/input/create-blog-input.type";
 import {UpdateBlogInputModel} from "../types/input/update-blog-input.type";
-import {BlogDbModel} from "../../../common/types/db/blog-db.model";
+import {BlogDbModel} from "../../../common/types/db/blogDb.model";
 import {ObjectId} from "bson";
 
 export const blogsServices = {

@@ -1,4 +1,4 @@
-import {BlogDbModel} from '../../../common/types/db/blog-db.model'
+import {BlogDbModel} from '../../../common/types/db/blogDb.model'
 import {ObjectId, WithId} from "mongodb"
 import {BlogOutputModel} from "../types/output/blog-output.type";
 import {validQueryType} from "../../../common/types/validQuery.type";

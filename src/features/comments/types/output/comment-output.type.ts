@@ -1,4 +1,4 @@
-import {commentatorInfo} from "../../../../common/types/db/comment-db.model";
+import {commentatorInfo} from "../../../../common/types/db/commentDb.model";
 
 export type CommentOutputModel = {
     id:string

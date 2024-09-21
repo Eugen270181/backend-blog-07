@@ -1,4 +1,4 @@
-import {PostDbModel} from '../../../common/types/db/post-db.model'
+import {PostDbModel} from '../../../common/types/db/postDb.model'
 import {ObjectId} from "mongodb"
 import {blogsRepository} from '../../blogs/repositories/blogsRepository'
 import {CreatePostInputModel} from "../types/input/create-post-input.type";

@@ -1,7 +1,7 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
 import {PostOutputModel} from "../types/output/post-output.type";
-import {PostDbModel} from "../../../common/types/db/post-db.model";
+import {PostDbModel} from "../../../common/types/db/postDb.model";
 import {validQueryType} from "../../../common/types/validQuery.type";
 import {pagPostOutputModel} from "../types/output/pag-post-output.type";
 

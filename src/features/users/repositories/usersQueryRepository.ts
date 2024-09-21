@@ -3,7 +3,7 @@ import {ObjectId, WithId} from "mongodb"
 import {validQueryType} from "../../../common/types/validQuery.type";
 import {pagUserOutputModel} from "../types/output/pag-user-output.type";
 import {UserOutputModel} from "../types/output/user-output.type";
-import {UserDbModel} from "../../../common/types/db/user-db.model";
+import {UserDbModel} from "../../../common/types/db/userDb.model";
 import {MeOutputModel} from "../../auth/types/output/me-output.model";
 
 export const usersQueryRepository = {

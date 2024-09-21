@@ -1,4 +1,4 @@
-import {BlogDbModel} from '../../../common/types/db/blog-db.model'
+import {BlogDbModel} from '../../../common/types/db/blogDb.model'
 import {db} from "../../../common/module/db/db"
 import {ObjectId} from "mongodb"
 import {UpdateBlogInputModel} from "../types/input/update-blog-input.type";

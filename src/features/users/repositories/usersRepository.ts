@@ -1,6 +1,6 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId,WithId} from "mongodb"
-import {UserDbModel} from "../../../common/types/db/user-db.model";
+import {UserDbModel} from "../../../common/types/db/userDb.model";
 
 export const usersRepository = {
     async createUser(user: UserDbModel):Promise<string> {

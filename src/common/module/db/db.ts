@@ -1,9 +1,9 @@
 import {Db, MongoClient} from "mongodb"
-import {BlogDbModel} from '../../types/db/blog-db.model'
-import {PostDbModel} from '../../types/db/post-db.model'
+import {BlogDbModel} from '../../types/db/blogDb.model'
+import {PostDbModel} from '../../types/db/postDb.model'
 import {appConfig} from "../../settings/config";
-import {UserDbModel} from "../../types/db/user-db.model";
-import {CommentDbModel} from "../../types/db/comment-db.model";
+import {UserDbModel} from "../../types/db/userDb.model";
+import {CommentDbModel} from "../../types/db/commentDb.model";
 
 export const db = {
     client: {} as MongoClient,
