@@ -1,19 +1,30 @@
-import {LoginInputModel} from "../types/input/login-input.model";
-import {hashServices} from "../../../common/adapters/hashServices";
-import {usersRepository} from "../../users/repositories/usersRepository";
-import {Result} from "../../../common/types/result.type";
-import {ResultStatus} from "../../../common/types/enum/resultStatus";
+import { LoginInputModel } from '../types/input/login-input.model';
+import { hashServices } from '../../../common/adapters/hashServices';
+import { usersRepository } from '../../users/repositories/usersRepository';
+import { ResultClass } from '../../../common/classes/result.class';
+import { ResultStatus } from '../../../common/types/enum/resultCode';
 
 export const authServices = {
-    async isLogin(login:LoginInputModel):Promise< Result<string> > {
-        //TODO With CLASSES!!!!!!
+    async isLogin(login:LoginInputModel) {
+        const result = new ResultClass<string>();
         const {loginOrEmail, password} = login
         const user=await usersRepository.getUserByCredentials(loginOrEmail)
-        if (!user) return {status:ResultStatus.NotFound}
+        // Проверка на наличие пользователя
+        if (!user) {
+            result.status = ResultStatus.NotFound;
+            return result; // Возвращаем результат с соответствующим статусом
+        }
 
-        const checkPas = await hashServices.checkHash(password, user.passwordHash)
+        // Проверка пароля
+        const checkPas = await hashServices.checkHash(password, user.passwordHash);
+        if (!checkPas) {
+            result.status = ResultStatus.NotFound; // Если пароль неверный, также устанавливаем статус NotFound
+            return result; // Возвращаем результат с соответствующим статусом
+        }
 
-        if (!checkPas) return {data:user._id.toString(),status:ResultStatus.NotFound}
-        return {data:user._id.toString(),status:ResultStatus.Success}
+        // Если аутентификация прошла успешно
+        result.data = user._id.toString(); // Устанавливаем идентификатор пользователя в data
+        result.status = ResultStatus.Success; // Устанавливаем статус успеха
+        return result; // Возвращаем результат
     }
 }

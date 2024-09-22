@@ -5,7 +5,7 @@ import {CreateUserInputModel} from "../types/input/create-user-input.type";
 import {UserOutputModel} from "../types/output/user-output.type";
 import {OutputErrorsType} from "../../../common/types/outputErrors.type";
 
-
+//TODO:with resultClass obj
 export const createUserController = async (req: Request<any, any, CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {
     const newUserResult = await usersServices.createUser(req.body)
     if (!newUserResult.status) {

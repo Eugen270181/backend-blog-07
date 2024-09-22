@@ -3,11 +3,13 @@ import {ObjectId} from "bson";
 import {CreateUserInputModel} from "../types/input/create-user-input.type";
 import {UserDbModel} from "../../../common/types/db/userDb.model";
 import {hashServices} from "../../../common/adapters/hashServices";
-import {Result} from "../../../common/types/result.type";
+import { ResultClass } from '../../../common/classes/result.class';
 
 
 export const usersServices = {
-    async createUser(user: CreateUserInputModel): Promise<Result<string>> {
+    async createUser(user: CreateUserInputModel) {
+        //TODO:with class
+        const result = new ResultClass<string>();
         const {login, password, email} = user
 
         if (await usersRepository.findUserByLogin(login)) return {data: 'login', status: 0}
