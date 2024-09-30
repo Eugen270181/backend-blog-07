@@ -1,19 +1,19 @@
-import {Request, Response} from 'express'
+import {Response} from 'express'
 import {postsQueryRepository} from "../../posts/repository/postsQueryRepository";
-import {pagPostOutputModel} from "../../posts/types/output/pag-post-output.type";
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
-import {anyQueryType} from "../../../common/types/anyQuery.type";
+import {pagPostOutputModel} from "../../posts/types/output/pagPostOutput.type";
+import {querySortSanitizer} from "../../../common/module/querySortSanitizer";
 import {blogsRepository} from "../repositories/blogsRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithParamsAndQuery} from "../../../common/types/requests.type";
+import {IdType} from "../../../common/types/id.type";
+import {SortQueryFieldsType} from "../../../common/types/sortQueryFields.type";
 
-export const findBlogPostsController = async (req: Request<{id: string}>, res: Response<pagPostOutputModel>) => {
+export const findBlogPostsController = async (req: RequestWithParamsAndQuery<IdType,SortQueryFieldsType>, res: Response<pagPostOutputModel>) => {
     const blogId = req.params.id
     const foundBlog = await blogsRepository.findBlogById(blogId)
-    if (!foundBlog) {
-        res.sendStatus(404)
-        return
-    }
-    const sanitizedQuery:validQueryType = inputQuerySanitizer(req.query as anyQueryType)
-    const getPosts = await postsQueryRepository.getPostsAndMap(sanitizedQuery,blogId)
-    res.status(200).send(getPosts)
+    if (!foundBlog) return res.sendStatus(HttpStatus.NotFound)
+
+    const sanitizedSortQuery = querySortSanitizer(req.query)
+    const getPosts = await postsQueryRepository.getPostsAndMap(sanitizedSortQuery,blogId)
+    return res.status(HttpStatus.Success).send(getPosts)
 }

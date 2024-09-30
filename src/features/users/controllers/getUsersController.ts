@@ -1,13 +1,20 @@
-import {Request, Response} from 'express'
+import {Response} from 'express'
 import {usersQueryRepository} from "../repositories/usersQueryRepository";
-import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {anyQueryType} from "../../../common/types/anyQuery.type";
-import {pagUserOutputModel} from "../types/output/pag-user-output.type";
+import {querySortSanitizer} from "../../../common/module/querySortSanitizer";
+import {SortQueryFilterType} from "../../../common/types/sortQueryFilter.type";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithQuery} from "../../../common/types/requests.type";
+import {UsersQueryFieldsType} from "../types/usersQueryFields.type";
+import {Pagination} from "../../../common/types/pagination.type";
+import {UserOutputModel} from "../types/output/userOutput.type";
+import {UsersQueryFilterType} from "../types/usersQueryFilter.type";
 
-export const getUsersController = async (req:Request, res:Response<pagUserOutputModel>) => {
-    const sanitizedQuery:validQueryType = inputQuerySanitizer(req.query as anyQueryType)
-    const foundUsers = await usersQueryRepository.getMapUsers(sanitizedQuery)
-    res.status(200).send(foundUsers)
-    return
+export const getUsersController = async (req : RequestWithQuery<UsersQueryFieldsType>, res : Response<Pagination<UserOutputModel[]>>) => {
+    const sanitizedSortQuery:SortQueryFilterType = querySortSanitizer(req.query)
+    const searchLoginTerm = req.query.searchLoginTerm;
+    const searchEmailTerm = req.query.searchEmailTerm;
+    const usersQueryFilter:UsersQueryFilterType = {searchLoginTerm, searchEmailTerm, ...sanitizedSortQuery}
+
+    const foundUsers = await usersQueryRepository.getMapUsers(usersQueryFilter)
+    return res.status(HttpStatus.Success).send(foundUsers)
 }

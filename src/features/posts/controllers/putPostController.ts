@@ -1,9 +1,13 @@
-import {Request, Response} from 'express'
-import {UpdatePostInputModel} from "../types/input/update-post-input.type";
+import {Response} from 'express'
+import {UpdatePostInputModel} from "../types/input/updatePostInput.type";
 import {postsServices} from "../services/postsServices";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithParamsAndBody} from "../../../common/types/requests.type";
+import {IdType} from "../../../common/types/id.type";
 
-export const putPostController = async (req: Request<{id: string}, any, UpdatePostInputModel>, res: Response) => {
-    const updateResult = await postsServices.updatePost(req.body,req.params.id)
-    if(!updateResult) return res.sendStatus(404)
-    return res.sendStatus(204)
+export const putPostController = async (req: RequestWithParamsAndBody<IdType, UpdatePostInputModel>, res: Response) => {
+    const postId = req.params.id
+    const updateResult = await postsServices.updatePost(req.body,postId)
+    if(!updateResult) return res.sendStatus(HttpStatus.NotFound)
+    return res.sendStatus(HttpStatus.NoContent)
 }

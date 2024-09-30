@@ -1,8 +1,8 @@
-import {PostDbModel} from '../../../common/types/db/postDb.model'
+import {PostDbModel} from '../types/postDb.model'
 import {ObjectId} from "mongodb"
 import {blogsRepository} from '../../blogs/repositories/blogsRepository'
-import {CreatePostInputModel} from "../types/input/create-post-input.type";
-import {UpdatePostInputModel} from "../types/input/update-post-input.type";
+import {CreatePostInputModel} from "../types/input/createPostInput.type";
+import {UpdatePostInputModel} from "../types/input/updatePostInput.type";
 import {postsRepository} from "../repository/postsRepository";
 
 
@@ -26,9 +26,8 @@ export const postsServices = {
         if (!isIdValid) return false
         const {title, shortDescription, content, blogId} = post
         const blog = await blogsRepository.findBlogById(post.blogId)
-        if(!blog){ return false}
+        if(!blog) return false
         const updateObject = {...{title, shortDescription, content, blogId},  blogName:blog.name}
         return postsRepository.updatePost(updateObject,id)
     },
-
 }

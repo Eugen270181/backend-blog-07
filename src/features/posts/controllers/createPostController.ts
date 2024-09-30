@@ -1,17 +1,16 @@
-import {Response, Request} from 'express'
-import {CreatePostInputModel} from "../types/input/create-post-input.type";
-import {PostOutputModel} from "../types/output/post-output.type";
+import {Response} from 'express'
+import {CreatePostInputModel} from "../types/input/createPostInput.type";
+import {PostOutputModel} from "../types/output/postOutput.type";
 import {postsServices} from "../services/postsServices";
 import {postsQueryRepository} from "../repository/postsQueryRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithBody} from "../../../common/types/requests.type";
 
-export const createPostController = async (req: Request<any, any, CreatePostInputModel>, res: Response<PostOutputModel>) => {
+export const createPostController = async (req: RequestWithBody<CreatePostInputModel>, res: Response<PostOutputModel>) => {
     const newPostId = await postsServices.createPost(req.body)
     const newPost = await postsQueryRepository.findPostAndMap(newPostId)
 
-    if (!newPost) {
-        console.log('пост был создан, но не найден')
-        res.sendStatus(504)
-        return
-    }
-    res.status(201).send(newPost)
+    if (!newPost) return res.sendStatus(HttpStatus.InternalServerError)
+
+    return res.status(HttpStatus.Created).send(newPost)
 }

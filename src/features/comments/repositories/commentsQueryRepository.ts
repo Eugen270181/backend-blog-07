@@ -1,9 +1,9 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {CommentOutputModel} from "../types/output/comment-output.type";
-import {CommentDbModel} from "../../../common/types/db/commentDb.model";
-import {pagCommentOutputModel} from "../types/output/pag-comment-output.type";
+import {SortQueryFilterType} from "../../../common/types/sortQueryFilter.type";
+import {CommentOutputModel} from "../types/output/commentOutput.type";
+import {CommentDbModel} from "../types/commentDb.model";
+import {pagCommentOutputModel} from "../types/output/pagCommentOutput.type";
 
 export const commentsQueryRepository = {
     async findCommentById(id: string) {
@@ -15,7 +15,7 @@ export const commentsQueryRepository = {
         const comment = await this.findCommentById(id)
         return comment?this.map(comment):null
     },
-    async getCommentsAndMap(query:validQueryType,postId?:string):Promise<pagCommentOutputModel> {
+    async getCommentsAndMap(query:SortQueryFilterType, postId?:string):Promise<pagCommentOutputModel> {
         const search = postId?{postId:postId}:{}
         try {
             const comments = await db.getCollections().commentsCollection

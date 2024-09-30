@@ -1,4 +1,4 @@
-import { PostOutputModel } from './post-output.type';
+import { PostOutputModel } from './postOutput.type';
 
 export type pagPostOutputModel = {
   pagesCount: number

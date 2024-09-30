@@ -9,7 +9,6 @@ import {commentsRouter} from "./features/comments/comments.router";
 import {routersPaths} from "./common/settings/paths";
 
 
-
 export const initApp = () => {
     const app = express() // создать приложение
 

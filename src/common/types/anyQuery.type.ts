@@ -1,1 +1,0 @@
-export type anyQueryType = {[key:string]:string|undefined}

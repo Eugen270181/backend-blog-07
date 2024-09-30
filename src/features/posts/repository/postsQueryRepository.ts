@@ -1,9 +1,9 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
-import {PostOutputModel} from "../types/output/post-output.type";
-import {PostDbModel} from "../../../common/types/db/postDb.model";
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {pagPostOutputModel} from "../types/output/pag-post-output.type";
+import {PostOutputModel} from "../types/output/postOutput.type";
+import {PostDbModel} from "../types/postDb.model";
+import {SortQueryFilterType} from "../../../common/types/sortQueryFilter.type";
+import {pagPostOutputModel} from "../types/output/pagPostOutput.type";
 
 export const postsQueryRepository = {
     async findPostById(id: string) {
@@ -15,11 +15,8 @@ export const postsQueryRepository = {
         const post = await this.findPostById(id)
         return post?this.map(post):null
     },
-    async getPostsAndMap(query:validQueryType, blogId?:string):Promise<pagPostOutputModel> { // используем этот метод если проверили валидность и существование в бд значения blogid
-        let filter = {}
-        if (blogId) {
-            filter =  {blogId}
-        }
+    async getPostsAndMap(query:SortQueryFilterType, blogId?:string):Promise<pagPostOutputModel> { // используем этот метод если проверили валидность и существование в бд значения blogid
+        const filter = blogId?{blogId}:{}
         //const search = query.searchNameTerm ? {title:{$regex:query.searchNameTerm,$options:'i'}}:{}
         try {
             const posts = await db.getCollections().postsCollection

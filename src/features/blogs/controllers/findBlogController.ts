@@ -1,13 +1,13 @@
-import {Request, Response} from 'express'
-import {BlogOutputModel} from "../types/output/blog-output.type";
+import {Response} from 'express'
+import {BlogOutputModel} from "../types/output/blogOutput.type";
 import {blogsQueryRepository} from "../repositories/blogsQueryRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithParams} from "../../../common/types/requests.type";
+import {IdType} from "../../../common/types/id.type";
 
-export const findBlogController = async (req: Request<{id: string}>, res: Response<BlogOutputModel | {}>) => {
+export const findBlogController = async (req: RequestWithParams<IdType>, res: Response<BlogOutputModel | {}>) => {
     const blogId = req.params.id
     const foundBlog = await blogsQueryRepository.findBlogAndMap(blogId)
-    if (!foundBlog) {
-        res.sendStatus(404)
-        return
-    }
-    res.status(200).send(foundBlog)
+    if (!foundBlog) return res.sendStatus(HttpStatus.NotFound)
+    return res.status(HttpStatus.Success).send(foundBlog)
 }

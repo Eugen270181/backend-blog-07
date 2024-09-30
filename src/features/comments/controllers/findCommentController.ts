@@ -1,13 +1,15 @@
-import {Request, Response} from 'express'
-import {CommentOutputModel} from "../types/output/comment-output.type";
+import {Response} from 'express'
+import {CommentOutputModel} from "../types/output/commentOutput.type";
 import {commentsQueryRepository} from "../repositories/commentsQueryRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithParams} from "../../../common/types/requests.type";
+import {IdType} from "../../../common/types/id.type";
 
-export const findCommentController = async (req: Request<{id: string}>, res: Response<CommentOutputModel | {}>) => {
+export const findCommentController = async (req: RequestWithParams<IdType>, res: Response<CommentOutputModel>) => {
     const commentId = req.params.id
     const foundComment = await commentsQueryRepository.findCommentAndMap(commentId)
-    if (!foundComment) {
-        res.sendStatus(404)
-        return
-    }
-    res.status(200).send(foundComment)
+
+    if (!foundComment) return res.sendStatus(HttpStatus.NotFound)
+
+    return res.status(HttpStatus.Success).send(foundComment)
 }

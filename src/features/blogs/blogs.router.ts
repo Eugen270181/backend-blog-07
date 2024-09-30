@@ -9,12 +9,13 @@ import {adminMiddleware} from '../../common/middleware/adminMiddleware'
 import {findBlogPostsController} from "./controllers/findBlogPostsController";
 import {createBlogPostController} from "./controllers/createBlogPostController";
 import {blogPostValidators} from "../posts/middlewares/postValidators";
+import {querySortSanitizers} from "../../common/middleware/querySortSanitizerMiddleware";
 
 export const blogsRouter = Router()
 
-blogsRouter.get('/', getBlogsController)
+blogsRouter.get('/', ...querySortSanitizers, getBlogsController)
 blogsRouter.get('/:id', findBlogController)
-blogsRouter.get('/:id/posts', findBlogPostsController)//new - task-04
+blogsRouter.get('/:id/posts', ...querySortSanitizers, findBlogPostsController)//new - task-04
 blogsRouter.post('/:id/posts', adminMiddleware,...blogPostValidators, createBlogPostController)//new - task-04
 blogsRouter.post('/', adminMiddleware,...blogValidators, createBlogController)
 blogsRouter.delete('/:id', adminMiddleware, delBlogController)

@@ -1,9 +1,9 @@
-import {BlogDbModel} from '../../../common/types/db/blogDb.model'
+import {BlogDbModel} from '../types/blogDb.model'
 import {ObjectId, WithId} from "mongodb"
-import {BlogOutputModel} from "../types/output/blog-output.type";
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {pagBlogOutputModel} from "../types/output/pag-blog-output.type";
+import {BlogOutputModel} from "../types/output/blogOutput.type";
 import {db} from "../../../common/module/db/db";
+import {Pagination} from "../../../common/types/pagination.type";
+import {BlogsQueryFilterType} from "../types/blogsQueryFilter.type";
 
 
 export const blogsQueryRepository = {
@@ -17,7 +17,7 @@ export const blogsQueryRepository = {
         const blog = await this.findBlogById(id)
         return blog?this.map(blog):null
     },
-    async getBlogsAndMap(query:validQueryType):Promise<pagBlogOutputModel> {
+    async getBlogsAndMap(query:BlogsQueryFilterType):Promise<Pagination<BlogOutputModel[]>> {
         const search = query.searchNameTerm ? {name:{$regex:query.searchNameTerm,$options:'i'}}:{}
         try {
             const blogs = await db.getCollections().blogsCollection

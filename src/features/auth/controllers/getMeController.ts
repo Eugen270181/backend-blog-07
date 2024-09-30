@@ -1,13 +1,13 @@
-import {Response, Request} from 'express'
-import {MeOutputModel} from "../types/output/me-output.model";
+import {Response} from 'express'
+import {MeOutputModel} from "../types/output/meOutput.model";
 import {usersQueryRepository} from "../../users/repositories/usersQueryRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {IdType} from "../../../common/types/id.type";
+import {RequestWithUserId} from "../../../common/types/requests.type";
 
 
-export const getMeController = async (req: Request, res: Response<MeOutputModel|{}>) => {
-    //TODO:release it
-    const userId = req.user.userId!
+export const getMeController = async (req: RequestWithUserId<IdType>, res: Response<MeOutputModel|{}>) => {
+    const userId = req.user?.id as string;
     const meViewObject = await usersQueryRepository.getMapMe(userId)
-    const result = meViewObject?meViewObject:{}
-    res.status(200).send(result)
-    return
+    return res.status(HttpStatus.Success).send(meViewObject)
 }

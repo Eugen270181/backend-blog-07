@@ -1,12 +1,12 @@
-import {Request, Response} from 'express'
-import {PostOutputModel} from "../types/output/post-output.type";
+import {Response} from 'express'
+import {PostOutputModel} from "../types/output/postOutput.type";
 import {postsQueryRepository} from "../repository/postsQueryRepository";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithParams} from "../../../common/types/requests.type";
+import {IdType} from "../../../common/types/id.type";
 
-export const findPostController = async (req: Request<{id: string}>, res: Response<PostOutputModel | {}>) => {
+export const findPostController = async (req: RequestWithParams<IdType>, res: Response<PostOutputModel>) => {
     const foundPost = await postsQueryRepository.findPostAndMap(req.params.id)
-    if (!foundPost) {
-        res.sendStatus(404)
-        return
-    }
-    res.status(200).send(foundPost)
+    if (!foundPost) return res.sendStatus(HttpStatus.NotFound)
+    return res.status(HttpStatus.Success).send(foundPost)
 }

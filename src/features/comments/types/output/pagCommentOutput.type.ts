@@ -1,4 +1,4 @@
-import {CommentOutputModel} from "./comment-output.type";
+import {CommentOutputModel} from "./commentOutput.type";
 
 export type pagCommentOutputModel = {
   pagesCount: number

@@ -1,12 +1,15 @@
-import {Request, Response} from 'express'
+import {Response} from 'express'
 import {postsQueryRepository} from "../repository/postsQueryRepository";
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {inputQuerySanitizer} from "../../../common/module/inputQuerySanitizer";
-import {anyQueryType} from "../../../common/types/anyQuery.type";
-import {pagPostOutputModel} from "../types/output/pag-post-output.type";
+import {querySortSanitizer} from "../../../common/module/querySortSanitizer";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {SortQueryFilterType} from "../../../common/types/sortQueryFilter.type";
+import {RequestWithQuery} from "../../../common/types/requests.type";
+import {SortQueryFieldsType} from "../../../common/types/sortQueryFields.type";
+import {Pagination} from "../../../common/types/pagination.type";
+import {PostOutputModel} from "../types/output/postOutput.type";
 
-export const getPostsController = async (req: Request, res: Response<pagPostOutputModel>) => {
-    const sanitizedQuery:validQueryType = inputQuerySanitizer(req.query as anyQueryType)
-    const foundPosts = await postsQueryRepository.getPostsAndMap(sanitizedQuery)
-    res.status(200).send(foundPosts)
+export const getPostsController = async (req: RequestWithQuery<SortQueryFieldsType>, res: Response<Pagination<PostOutputModel[]>>) => {
+    const sanitizedSortQuery:SortQueryFilterType = querySortSanitizer(req.query)
+    const foundPosts = await postsQueryRepository.getPostsAndMap(sanitizedSortQuery)
+    return res.status(HttpStatus.Success).send(foundPosts)
 }

@@ -1,10 +1,10 @@
 import {db} from "../../../common/module/db/db"
 import {ObjectId, WithId} from "mongodb"
-import {validQueryType} from "../../../common/types/validQuery.type";
-import {pagUserOutputModel} from "../types/output/pag-user-output.type";
-import {UserOutputModel} from "../types/output/user-output.type";
-import {UserDbModel} from "../../../common/types/db/userDb.model";
-import {MeOutputModel} from "../../auth/types/output/me-output.model";
+import {UserOutputModel} from "../types/output/userOutput.type";
+import {UserDbModel} from "../types/userDb.model";
+import {MeOutputModel} from "../../auth/types/output/meOutput.model";
+import {UsersQueryFilterType} from "../types/usersQueryFilter.type";
+import {Pagination} from "../../../common/types/pagination.type";
 
 export const usersQueryRepository = {
     async getUserById(id: string) {
@@ -18,10 +18,10 @@ export const usersQueryRepository = {
     },
     async getMapMe(id: string) {
         const user = await this.getUserById(id)
-        if (!user) return null
+        if (!user) return {}
         return this.mapMe(user)
     },
-    async getMapUsers(query:validQueryType):Promise<pagUserOutputModel> {
+    async getMapUsers(query:UsersQueryFilterType):Promise<Pagination<UserOutputModel[]>> {
         const searchLogin = query.searchLoginTerm ? {login:{$regex:query.searchLoginTerm,$options:'i'}}:{}
         const searchEmail = query.searchEmailTerm ? {email:{$regex:query.searchEmailTerm,$options:'i'}}:{}
         const search = {$or:[searchLogin,searchEmail]}
@@ -48,8 +48,8 @@ export const usersQueryRepository = {
 
     },
     mapUser(user:WithId<UserDbModel>):UserOutputModel{
-        const { _id, passwordHash,...userForOutPut} = user;//деструктуризация
-        return {id:user._id.toString(),...userForOutPut}
+        const { _id, passwordHash,createdAt,emailConfirmation,...userForOutPut} = user;//деструктуризация
+        return {id:user._id.toString(),createdAt:user.createdAt.toISOString(),...userForOutPut}
     },
     mapMe(user:WithId<UserDbModel>):MeOutputModel{
         const { _id,email, login} = user;//деструктуризация

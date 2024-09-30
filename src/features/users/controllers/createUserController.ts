@@ -1,24 +1,24 @@
-import {Response, Request} from 'express'
+import {Response} from 'express'
 import {usersServices} from "../services/usersServices";
 import {usersQueryRepository} from "../repositories/usersQueryRepository";
-import {CreateUserInputModel} from "../types/input/create-user-input.type";
-import {UserOutputModel} from "../types/output/user-output.type";
+import {CreateUserInputModel} from "../types/input/createUserInput.type";
+import {UserOutputModel} from "../types/output/userOutput.type";
 import {OutputErrorsType} from "../../../common/types/outputErrors.type";
+import {ResultStatus} from "../../../common/types/enum/resultStatus";
+import {HttpStatus} from "../../../common/types/enum/httpStatus";
+import {RequestWithBody} from "../../../common/types/requests.type";
 
-//TODO:with resultClass obj
-export const createUserController = async (req: Request<any, any, CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {
+
+export const createUserController = async (req: RequestWithBody<CreateUserInputModel>, res: Response<UserOutputModel|OutputErrorsType>) => {
     const newUserResult = await usersServices.createUser(req.body)
-    if (!newUserResult.status) {
-        res.status(400).send({ errorsMessages: [ {message:'Not unique field!', field:newUserResult.data!} ] })
-        return
+
+    if (newUserResult.status===ResultStatus.BadRequest) {
+        return res.status(HttpStatus.BadRequest).send(newUserResult.errors)
     }
 
     const newUser = await usersQueryRepository.getMapUser(newUserResult.data!)
 
-    if (!newUser) {
-        console.log('юзер был создан, но не найден')
-        res.sendStatus(504)
-        return
-    }
-    res.status(201).send(newUser)
+    if (!newUser) return res.sendStatus(HttpStatus.InternalServerError)
+
+    return res.status(HttpStatus.Created).send(newUser)
 };
