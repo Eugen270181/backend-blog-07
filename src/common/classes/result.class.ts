@@ -1,9 +1,8 @@
-
-import { OutputErrorsType } from '../types/outputErrors.type';
+import {OutputErrorsType} from '../types/outputErrors.type';
 import {ResultStatus} from "../types/enum/resultStatus";
 
 
-export class ResultClass<T> {
+export class ResultClass<T=null> {
     public status:ResultStatus; // статусы ответов на запросы - для превращения в http статусы ответа
     public data:T|null; //данные - структура дженерик для передачи в теле ответа
     public errors: OutputErrorsType;         // объект с ключом - Массив ошибок

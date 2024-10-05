@@ -1,4 +1,5 @@
 import {randomUUID} from "crypto";
+import {add} from "date-fns/add";
 
 export class User {
     login: string;
@@ -17,7 +18,7 @@ export class User {
         this.passwordHash = hash
         this.createdAt = new Date()
         this.emailConfirmation = {
-            expirationDate: new Date(),
+            expirationDate: add( new Date(), { hours: 1, minutes: 30 } ),
             confirmationCode: randomUUID(),
             isConfirmed: false
         }

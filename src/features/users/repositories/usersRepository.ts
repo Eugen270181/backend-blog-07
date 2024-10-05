@@ -1,5 +1,5 @@
 import {db} from "../../../common/module/db/db"
-import {ObjectId,WithId} from "mongodb"
+import {ObjectId} from "mongodb"
 import {UserDbModel} from "../types/userDb.model";
 
 export const usersRepository = {
@@ -12,7 +12,7 @@ export const usersRepository = {
         if (!isIdValid) return null
         return db.getCollections().usersCollection.findOne({ _id: new ObjectId(id) });
     },
-    async getUserByCredentials(inputLogin:string):Promise<WithId<UserDbModel>|null> {
+    async findByLoginOrEmail(inputLogin:string){
         const search = { $or: [
             { login: inputLogin },  // поля логина
             { email: inputLogin }      // или электронная почта
@@ -25,8 +25,16 @@ export const usersRepository = {
     async findUserByEmail(email: string) {
         return db.getCollections().usersCollection.findOne({email} )
     },
+    async findUserByRegConfirmCode(code: string) {
+        return db.getCollections().usersCollection.findOne({'emailConfirmation.confirmationCode':code} )
+    },
+    async updateConfirmation(_id:ObjectId) {
+        const result = await db.getCollections().usersCollection
+            .updateOne({_id},{$set:{'emailConfirmation.isConfirmed':true}})
+        return result.modifiedCount === 1
+    },
     async deleteUser(id:ObjectId){
         const result = await db.getCollections().usersCollection.deleteOne({ _id: id });
         return result.deletedCount > 0
-    }
+    },
 }

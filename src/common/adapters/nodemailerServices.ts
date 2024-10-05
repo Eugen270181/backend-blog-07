@@ -1,10 +1,11 @@
 import nodemailer from "nodemailer";
 import { appConfig } from "../settings/config";
+import {emailExamples} from "./emailExamples";
 
 
 export const nodemailerServices = {
 
-    async sendEmail(email: string, code: string, template: (code: string) => string): Promise<boolean> {
+    async sendEmail(email: string, code: string): Promise<boolean> {
         let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -17,7 +18,7 @@ export const nodemailerServices = {
             from: '"Kek 👻" <codeSender>',
             to: email,
             subject: "Your code is here",
-            html: template(code), // html body
+            html: emailExamples.registrationEmail(code), // html body
         });
 
         return !!info;

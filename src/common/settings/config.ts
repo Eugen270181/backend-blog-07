@@ -15,7 +15,7 @@ export const appConfig = {
     AT_TIME: process.env.AT_TIME as string || '1h',
     RT_SECRET: process.env.RT_SECRET as string,
     DB_TYPE: process.env.DB_TYPE as string,
-    EMAIL: process.env.EMAIL as string ,
+    EMAIL: process.env.EMAIL as string,
     EMAIL_PASS: process.env.EMAIL_PASS as string,
 }
 //console.log(process.env.MONGO_URL)

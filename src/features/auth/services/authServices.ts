@@ -5,28 +5,56 @@ import {ResultClass} from '../../../common/classes/result.class';
 import {ResultStatus} from '../../../common/types/enum/resultStatus';
 import {jwtServices} from "../../../common/adapters/jwtServices";
 import {IdType} from "../../../common/types/id.type";
+import {nodemailerServices} from "../../../common/adapters/nodemailerServices";
+import {User} from "../../users/classes/user.class";
+import {CreateUserInputModel} from "../../users/types/input/createUserInput.type";
+import {WithId} from "mongodb";
+import {UserDbModel} from "../../users/types/userDb.model";
+import {LoginSuccessOutputModel} from "../types/output/loginSuccessOutput.model";
 
 export const authServices = {
-    async isLogin(login:LoginInputModel) {
-        const result = new ResultClass<string>()
+    async loginUser(login:LoginInputModel) {
+        const result = new ResultClass<LoginSuccessOutputModel>()
         const {loginOrEmail, password} = login
-        const user=await usersRepository.getUserByCredentials(loginOrEmail)
-        // Проверка на наличие пользователя
-        if (!user) {
-            result.status = ResultStatus.NotFound;
-            return result; // Возвращаем результат с соответствующим статусом
+        const user=await this.checkUserCredentials(loginOrEmail, password)
+        //если логин или пароль не верны или не существуют
+        if (user.status !== ResultStatus.Success) {
+            result.status = ResultStatus.Unauthorized
+            result.addError('Wrong credentials','loginOrEmail|password')
+            return result
         }
-        // Проверка пароля
-        const checkPass = await hashServices.checkHash(password, user.passwordHash);
-        if (!checkPass) {
-            result.status = ResultStatus.NotFound; // Если пароль неверный, также устанавливаем статус NotFound
-            return result; // Возвращаем результат с соответствующим статусом
+        //если данные для входа валидны, то генеирруем токен для пользователя по его id
+        const accessToken = await jwtServices.createToken(user.data!._id.toString())
+        //возвращаем статус успех и сам токен в объекте
+        result.status = ResultStatus.Success
+        result.data = {accessToken}
+
+        return result
+    },
+    async registerUser(user:CreateUserInputModel) {
+        const {login, password, email} = user
+        const result = new ResultClass()
+
+        if (await usersRepository.findUserByLogin(login)) {
+            result.addError("not unique field!", "login")
+            return result
+        }
+        if (await usersRepository.findUserByEmail(email)) {
+            result.addError("not unique field!", "email")
+            return result
         }
 
-        // Если аутентификация прошла успешно
-        result.data = user._id.toString(); // Устанавливаем идентификатор пользователя в data
-        result.status = ResultStatus.Success; // Устанавливаем статус успеха
-        return result; // Возвращаем результат
+        const passwordHash = await hashServices.getHash(password)
+        const newUser = new User(login, email, passwordHash);//create user from constructor of User Class, not from admin - usersServices.createUser
+
+        await usersRepository.createUser(newUser);
+
+        nodemailerServices
+            .sendEmail(newUser.email, newUser.emailConfirmation.confirmationCode)
+            .catch((er) => console.error('error in send email:', er));
+
+        result.status = ResultStatus.Success
+        return result
     },
     async checkAccessToken(authHeader: string) {
         const [type, token] = authHeader.split(" ")
@@ -39,5 +67,54 @@ export const authServices = {
         }
 
         return result
+    },
+    async checkUserCredentials(loginOrEmail: string, password: string){
+        const result = new ResultClass<WithId<UserDbModel>>()
+        const user = await usersRepository.findByLoginOrEmail(loginOrEmail);
+        // Проверка на наличие пользователя
+        if (!user) {
+            result.status = ResultStatus.NotFound
+            result.addError('User not found','loginOrEmail')
+            return result
+        }
+        // Проверка пароля
+        const isPassCorrect = await hashServices.checkHash(password, user.passwordHash);
+        if (!isPassCorrect) {
+            result.addError('Wrong Password','password')
+            return result
+        }
+
+        return {
+            status: ResultStatus.Success,
+            data: user
+        }
+    },
+    async confirmEmail(code: string) {
+        const result = new ResultClass()
+        const user = await usersRepository.findUserByRegConfirmCode(code)
+
+        if (!user) {
+            result.addError('confirmation code is incorrect','code')
+            return result
+        }
+        if (user.emailConfirmation.isConfirmed) {
+            result.addError('confirmation code already been applied','code')
+            return result
+        }
+        if (user.emailConfirmation.expirationDate < new Date()) {
+            result.addError('confirmation code is expired','code')
+            return result
+        }
+
+        const isUpdateConfirmation = await usersRepository.updateConfirmation(user._id)
+
+        if (!isUpdateConfirmation) {
+            result.addError('Something wrong with activate your account, try later','code')
+            return result
+        }
+
+        result.status = ResultStatus.Success
+        return result
     }
+
 }

@@ -5,8 +5,6 @@ import {UserDbModel} from "../types/userDb.model";
 import {hashServices} from "../../../common/adapters/hashServices";
 import {ResultClass} from '../../../common/classes/result.class';
 import {ResultStatus} from "../../../common/types/enum/resultStatus";
-import {randomUUID} from "crypto";
-import {add} from "date-fns/add";
 
 export const usersServices = {
     async createUser(user: CreateUserInputModel) {
@@ -26,10 +24,10 @@ export const usersServices = {
             ...{login, email},
             passwordHash: await hashServices.getHash(password),
             createdAt: new Date(),
-            emailConfirmation: {    // доп поля необходимые для подтверждения
-                confirmationCode: randomUUID(),
-                expirationDate: add( new Date(), { hours: 1, minutes: 30 } ),
-                isConfirmed: false
+            emailConfirmation: {    // when admin created it's not neccessary to check email
+                confirmationCode: '',
+                expirationDate: new Date(),
+                isConfirmed: true
             }
         }
 
