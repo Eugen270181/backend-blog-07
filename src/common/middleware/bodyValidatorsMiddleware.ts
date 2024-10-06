@@ -7,6 +7,16 @@ const uniqueEmailValidator = async (email: string) => {
     return true
 }
 
+const EmailValidator = async (email: string) => {
+    const user = await usersRepository.findUserByEmail(email);
+
+    if (!user) throw new Error("Users account with this Email not found!")
+    if (user.emailConfirmation.isConfirmed) throw new Error("Users account with this email already activated!")
+
+    return true
+}
+
+
 const uniqueLoginValidator = async (login: string) => {
     const user = await usersRepository.findUserByLogin(login);
     if (user) throw new Error("login already exist")
@@ -33,6 +43,7 @@ export const loginOrEmailValidator = body('loginOrEmail').isString().withMessage
 export const codeRegConfirmValidator = body('code').isUUID(4).withMessage('Code is not UUID format').trim()
     .custom(checkRegConfirmCode)
 export const emailResendingValidator = body('email').isString().withMessage('Email must be a string')
-    .trim().isEmail().withMessage('Email must be a valid email address')
+  .trim().isEmail().withMessage('Email must be a valid email address').custom(EmailValidator)
+
 
 

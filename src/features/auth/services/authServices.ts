@@ -11,6 +11,8 @@ import {CreateUserInputModel} from "../../users/types/input/createUserInput.type
 import {WithId} from "mongodb";
 import {UserDbModel} from "../../users/types/userDb.model";
 import {LoginSuccessOutputModel} from "../types/output/loginSuccessOutput.model";
+import { randomUUID } from 'crypto';
+import { add } from 'date-fns/add';
 
 export const authServices = {
     async loginUser(login:LoginInputModel) {
@@ -115,6 +117,30 @@ export const authServices = {
 
         result.status = ResultStatus.Success
         return result
-    }
+    },
+    async resendEmail(email:string) {
+        const result = new ResultClass()
+        const user = await usersRepository.findUserByEmail(email)
+        if (!user) {
+            result.addError("Users account with this Email not found!", "email")
+            return result
+        }
+        if (user.emailConfirmation.isConfirmed) {
+            result.addError('Users account with this email already activated!','email')
+            return result
+        }
+        const newConfirmationCode = randomUUID()
+        const newConfirmationDate =add( new Date(), { hours: 1, minutes: 30 } )
+        const isUpdateConfirmationCode = await usersRepository.setConfirmationCode(user._id,newConfirmationCode,newConfirmationDate)
+        if (!isUpdateConfirmationCode) {
+            result.addError('Something wrong with activate your account, try later','email')
+            return result
+        }
+        nodemailerServices
+          .sendEmail(email, newConfirmationCode)
+          .catch((er) => console.error('error in send email:', er));
 
+        result.status = ResultStatus.Success
+        return result
+    },
 }

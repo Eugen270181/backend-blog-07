@@ -33,6 +33,11 @@ export const usersRepository = {
             .updateOne({_id},{$set:{'emailConfirmation.isConfirmed':true}})
         return result.modifiedCount === 1
     },
+    async setConfirmationCode(_id:ObjectId,code:string,date:Date) {
+        const result = await db.getCollections().usersCollection
+          .updateOne({_id},{$set:{'emailConfirmation.confirmationCode':code,'emailConfirmation.expirationDate':date}})
+        return result.modifiedCount === 1
+    },
     async deleteUser(id:ObjectId){
         const result = await db.getCollections().usersCollection.deleteOne({ _id: id });
         return result.deletedCount > 0

@@ -1,17 +1,16 @@
 import {Response} from 'express'
-import {authServices} from "../services/authServices";
 import {HttpStatus} from "../../../common/types/enum/httpStatus";
 import {RequestWithBody} from "../../../common/types/requests.type";
-import {CreateUserInputModel} from "../../users/types/input/createUserInput.type";
-import {ResultStatus} from "../../../common/types/enum/resultStatus";
 import {EmailResendingInputModel} from "../types/input/emailResendingInput.model";
+import { authServices } from '../services/authServices';
+import { ResultStatus } from '../../../common/types/enum/resultStatus';
 
 
 export const emailResendingAuthController = async (req: RequestWithBody<EmailResendingInputModel>, res: Response) => {
+    const {email} = req.body
+    const result = await authServices.resendEmail(email)
 
-    //const result = await authServices.registerUser( req.body )
-
-    //if (result.status === ResultStatus.BadRequest) return res.status(HttpStatus.BadRequest).send(result.errors)
+    if (result.status === ResultStatus.BadRequest) return res.status(HttpStatus.BadRequest).send(result.errors)
 
     return res.sendStatus(HttpStatus.NoContent)
 }
